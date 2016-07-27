@@ -8,5 +8,5 @@ import ru.disdev.model.User;
 public interface UserService {
     User getById(String id);
     boolean checkExist(String id);
-    void storeNewUser(User user);
+    void updateUser(User user);
 }

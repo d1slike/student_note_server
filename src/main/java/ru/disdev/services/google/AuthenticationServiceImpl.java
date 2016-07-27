@@ -6,10 +6,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.disdev.model.GroupPrivileges;
 import ru.disdev.model.User;
 import ru.disdev.services.UserService;
 
-import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
@@ -20,7 +20,7 @@ import java.util.Collections;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance())
-            .setAudience(Collections.singletonList("608114583618-kls0v57s34tnrd7shfntlaptm0tqnbcr.apps.googleusercontent.com"))
+            .setAudience(Collections.singletonList("608114583618-poi30d24lmj9v5jvjjedee5ce5ck7kir.apps.googleusercontent.com"))
             .setIssuer("https://accounts.google.com")
             .build();
 
@@ -36,16 +36,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if (googleIdToken != null) {
                 GoogleIdToken.Payload payload = googleIdToken.getPayload();
                 String userId = payload.getSubject();
-                if (service.checkExist(userId))
-                    user = service.getById(userId);
-                else {
-                    user = new User(userId, payload.getEmail(), (String) payload.get("name"));
-                    service.storeNewUser(user);
+                user = service.getById(userId);
+                if (user == null) {
+                    user = new User(userId, (String) payload.get("name"), payload.getEmail());
+                    user.setGroupId(-1);
+                    user.setPrivilege(GroupPrivileges.NONE);
+                    service.updateUser(user);
                 }
             }
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

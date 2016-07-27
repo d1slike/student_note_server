@@ -14,6 +14,9 @@ public class User {
     private String id;
     private String name;
     private String email;
+    private String deviceId;
+    private long groupId;
+    private GroupPrivileges  privilege;
 
     User() {
 
@@ -39,5 +42,33 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
+    }
+
+    public GroupPrivileges getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(GroupPrivileges privilege) {
+        this.privilege = privilege;
     }
 }
