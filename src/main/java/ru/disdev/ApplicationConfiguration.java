@@ -41,7 +41,7 @@ public class ApplicationConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        entityManagerFactoryBean.setPackagesToScan(environment.getRequiredProperty("db.entitymanager.packages.to.scan"));
+        entityManagerFactoryBean.setPackagesToScan(environment.getRequiredProperty("entitymanager.packages.to.scan"));
 
         entityManagerFactoryBean.setJpaProperties(hibernateProperties());
 
@@ -58,9 +58,9 @@ public class ApplicationConfiguration {
     private Properties hibernateProperties() {
         return new Properties() {
             {
-                setProperty("db.hibernate.hbm2ddl.auto", environment.getProperty("db.hibernate.hbm2ddl.auto"));
-                setProperty("db.hibernate.dialect", environment.getProperty("db.hibernate.dialect"));
-                setProperty("db.hibernate.show_sql", environment.getProperty("db.hibernate.show_sql"));
+                setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+                setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+                setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
             }
         };
     }

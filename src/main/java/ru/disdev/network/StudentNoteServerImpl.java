@@ -16,8 +16,6 @@ import ru.disdev.network.handlers.PacketDecoder;
 import ru.disdev.network.handlers.PacketEncoder;
 import ru.disdev.services.google.GCMService;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by Dislike on 18.07.2016.
  */
@@ -55,9 +53,6 @@ public class StudentNoteServerImpl implements StudentNoteServer {
             else
                LOGGER.info("Server was successfully up.");
         });
-
-        headExecutor.schedule(()-> gcmService.sendNotificationToUser(1, "fhfhf"), 15, TimeUnit.MINUTES);
-
     }
 
     public void shutdown() {

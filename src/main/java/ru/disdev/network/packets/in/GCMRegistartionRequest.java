@@ -7,23 +7,24 @@ import ru.disdev.services.ServiceHolder;
 /**
  * Created by Dislike on 19.07.2016.
  */
-public class RegistrationDeviceRequest extends ClientPacket {
+public class GCMRegistartionRequest extends ClientPacket {
 
     private String registrationId;
+    private String userId;
 
     @Override
     public void execute() {
-        ServiceHolder.gcmService.registerNewDevice(registrationId, 1);
-        ServiceHolder.gcmService.sendNotificationToUser(1, "blabla");
+        ServiceHolder.getGcmService().registerNewDevice(registrationId, userId);
     }
 
     @Override
     public void decode() {
         registrationId = readString();
+        userId = readString();
     }
 
     @Override
     public byte key() {
-        return InboundPacketsKeys.RegistrationDeviceRequest;
+        return InboundPacketsKeys.GCM_REGISTRATION_REQUEST;
     }
 }
