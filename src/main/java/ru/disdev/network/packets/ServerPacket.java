@@ -11,8 +11,8 @@ public abstract class ServerPacket extends AbstractPacket {
     }
 
     protected final void writeString(String value) {
-        for (char c : value.toCharArray())
-            buffer.writeChar(c);
+        for (int i = 0; i < value.length(); i++)
+            buffer.writeChar(value.charAt(i));
         buffer.writeChar('\0');
     }
 
