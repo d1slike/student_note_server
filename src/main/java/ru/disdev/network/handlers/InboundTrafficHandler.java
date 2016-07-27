@@ -7,8 +7,6 @@ import org.apache.logging.log4j.Logger;
 import ru.disdev.network.components.ActiveClientsPool;
 import ru.disdev.network.components.Client;
 import ru.disdev.network.packets.ClientPacket;
-import ru.disdev.network.packets.ServerPacket;
-import ru.disdev.services.ServiceHolder;
 
 /**
  * Created by Dislike on 18.07.2016.
@@ -16,14 +14,18 @@ import ru.disdev.services.ServiceHolder;
 public class InboundTrafficHandler extends SimpleChannelInboundHandler<ClientPacket> {
 
     private static final Logger LOGGER = LogManager.getLogger(InboundTrafficHandler.class);
+    private static final boolean DEBUG = true;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ClientPacket msg) throws Exception {
         Client client = ActiveClientsPool.getInstance().getClientByChannelId(ctx.channel().id());
         if (client == null)
             return;
+        if (DEBUG)
+            LOGGER.info(msg.tracePacket());
         msg.setClient(client);
         msg.execute();
+
     }
 
     @Override
@@ -43,6 +45,5 @@ public class InboundTrafficHandler extends SimpleChannelInboundHandler<ClientPac
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         ActiveClientsPool.getInstance().removeClientIfActive(ctx.channel().id());
         LOGGER.info("Disconnected " + ctx.channel().localAddress());
-        ServiceHolder.gcmService.sendNotificationToUser(1, "uhuhuh");
     }
 }
